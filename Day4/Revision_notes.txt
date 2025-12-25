@@ -1,0 +1,83 @@
+Here is a detailed revision note for your 
+Day4/Main.java
+ file. This file focuses on Control Flow (Loops) and Algorithmic Logic (Prime Number Optimization).
+
+📝 
+Day4/Main.java
+ Revision Notes
+1. Loop Structures
+You implemented two basic types of loops to print numbers from 1 to 3.
+
+While Loop
+java
+int i = 1;
+while(i <= 3){ 
+    System.out.println(i + " ");
+    i++;
+}
+Concept: The while loop checks the condition before executing the block.
+Use Case: Best used when you don't know the exact number of iterations in advance (e.g., reading a file until the end).
+Key Detail: You manually initialized i outside and incremented i++ inside.
+For Loop
+java
+for (i = 1; i <= 3; i++){
+    System.out.println(i + " ");
+}
+Concept: Compact structure containing Initialization, Condition, and Increment/Decrement in one line.
+Use Case: Best used when you know exactly how many times you want to loop.
+2. Prime Number Logic (5 Levels of Optimization)
+The core of your file demonstrates how to optimize a specific algorithm progressively. The goal is to correct check if a number n is Prime.
+
+Level 1: Brute Force
+Method: 
+isPrimeLevel1(int n)
+Logic: Check every number from 2 up to n-1.
+Code: for (int i = 2; i < n; i++)
+Why it works: If n is divisible by any number other than 1 and itself, it's not prime.
+Efficiency: 🔴 Slow (O(n)). If n is 1 billion, it runs 1 billion checks.
+Level 2: Halfway Cut
+Method: 
+isPrimeLevel2(int n)
+Logic: Check numbers from 2 up to n/2.
+Code: for (int i = 2; i <= n / 2; i++)
+Why it works: A number n cannot have a factor larger than its half (except itself). For example, if n is 100, you don't need to check 51, 52, etc.
+Efficiency: 🟠 Better but still O(n). It cuts the work in half, but mathematically it's still linear time.
+Level 3: Square Root Optimization
+Method: 
+isPrimeLevel3(int n)
+Logic: Check numbers from 2 up to Math.sqrt(n).
+Code: for (int i = 2; i * i <= n; i++)
+Why it works: Factors come in pairs (e.g., for 36: 4x9, 6x6). One of the factors in the pair must be less than or equal to the square root. If you don't find a factor by sqrt(n), you won't find one after it.
+Efficiency: 🟡 Fast (O(√n)). For 1 billion, you only do ~31,000 checks instead of 500 million.
+Level 4: Skip Even Numbers
+Method: 
+isPrimeLevel4(int n)
+Logic: Check if n is even first. If not, start loop at 3 and skip all even numbers (i += 2).
+Code:
+java
+if (n % 2 == 0) return false;
+for (int i = 3; i * i <= n; i += 2)
+Why it works: The only even prime is 2. Therefore, we never need to check if an odd number is divisible by 4, 6, 8, etc.
+Efficiency: 🟢 Very Fast. Cuts the remaining work of Level 3 in half.
+Level 5: The 6k ± 1 Rule (Best Practice)
+Method: 
+isPrimeLevel5(int n)
+Logic: Eliminate multiples of 2 and 3 immediately. Then check numbers in the pattern 6k - 1 and 6k + 1.
+Code:
+java
+if (n % 2 == 0 || n % 3 == 0) return false;
+for (int i = 5; i * i <= n; i += 6) {
+    if (n % i == 0 || n % (i + 2) == 0) ...
+}
+Why it works:
+All integers can be written as 6k, 6k+1, 6k+2, 6k+3, 6k+4, 6k+5.
+6k, 6k+2, 6k+4 are even (divisible by 2).
+6k+3 is divisible by 3.
+Only 6k+1 and 6k+5 (which is same as 6k-1) can be prime.
+Efficiency: 🌟 Optimal. This is the standard algorithm for competitive programming and high-performance checks.
+3. Key Takeaways
+Constraints Matter: Always verify edge cases like n <= 1 (Not prime) or n == 2, 3 (Prime).
+Order of Check: Always perform simple checks (like % 2 == 0) before entering a heavy loop.
+For vs While: Use for when iterating over a known range or sequence (like numbers 2 to n). Use while for indeterminate conditions.
+This file is a perfect reference for how algorithm analysis can turn a slow "Brute Force" solution into a lightning-fast "Optimized" solution.
+
